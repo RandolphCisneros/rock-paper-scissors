@@ -13,19 +13,12 @@ function playRound() {
     handleGameEndSelection();
 }
 
-function handleGameEndSelection() {
-    let playAgainChoice = prompt('Play again? (y/n)');
-    if (playAgainChoice === 'y') {
-        location.reload();
-    }
-    else {
-        alert('Game Over');
-    }
-}
-
 function playerSelect() {
     let playerSelection = promptUserInput();
-    if(playerSelection.toLowerCase != 'rock' && playerSelection.toLowerCase != 'paper' && playerSelection.toLowerCase != 'scissors'){
+    if (playerSelection !== null &&
+        playerSelection.toLowerCase() !== 'rock' && 
+        playerSelection.toLowerCase() !== 'paper' && 
+        playerSelection.toLowerCase() !== 'scissors') {
         alert("Invalid input");
         playerSelect();
     }
@@ -57,5 +50,12 @@ function pickComputerSelection() {
 
 }
 
-
-
+function handleGameEndSelection() {
+    let playAgainChoice = prompt('Play again? (y/n)');
+    if (playAgainChoice === 'y') {
+        location.reload();
+    }
+    else {
+        alert('Game Over');
+    }
+}
