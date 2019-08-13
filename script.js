@@ -1,10 +1,10 @@
-const choice = ['rock', 'paper', 'scissors'];
+const validChoices = ['rock', 'paper', 'scissors'];
 
 window.onload(playRound());
 
 function playRound() {
     let playerSelection = playerSelect();
-    let computerSelection = computerSelect();
+    let computerSelection = computerPlay();
     let winner = compareResults(playerSelection, computerSelection);
 
     alert(winer + ' beats ' + loser);
@@ -15,6 +15,7 @@ function playRound() {
 
 function playerSelect() {
     let playerSelection = promptUserInput();
+    //limited understanding on js arrays but can probably check from valid choices
     if (playerSelection !== null &&
         playerSelection.toLowerCase() !== 'rock' && 
         playerSelection.toLowerCase() !== 'paper' && 
@@ -31,23 +32,16 @@ function promptUserInput() {
 }
 
 function computerPlay() {
-    let compChoice = Math.floor(Math.random(0.2) * 10);
+    let compNumber = Math.floor((Math.random() * 2) + 1);
+    alert(compNumber);
+    let compChoice = validChoices[compNumber];
     alert(compChoice);
-}
-
-function computerSelect() {
-    let computerSelection = pickComputerSelection();
-    return computerSelection;
 }
 
 function compareResults(playerSelection, computerSelection) {
     if(playerSelection === 'rock') {
 
     }
-}
-
-function pickComputerSelection() {
-
 }
 
 function handleGameEndSelection() {
