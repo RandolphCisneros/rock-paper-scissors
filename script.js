@@ -82,6 +82,8 @@ function handleGameEndSelection() {
         let playAgainChoice = prompt('Play again? (y/n)');
         if (playAgainChoice === 'y') {
             playRound();
+        } else {
+            alert('Game Over');
         }
     } else {
         let finalGameWinner = player === 5 ? 'Player' : 'Computer';
