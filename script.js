@@ -87,14 +87,19 @@ function seeIfPlayerWon(playerSelection, computerSelection) {
 
 function handleGameEndSelection() {
     if (player != 5 && computer != 5) {
-        let playAgainChoice = prompt('Play again? (y/n)');
+        let playAgainChoice = prompt('Next round? (y/n)');
         if (playAgainChoice === 'y') {
             game();
         } else {
-            alert('Game Over');
+            alert('Forefeit\nGame Over');
         }
     } else {
         let finalGameWinner = player === 5 ? 'Player' : 'Computer';
         alert('Final Winner: ' + finalGameWinner + '\nGame Over');
+        if(prompt('Play again? y/n') === 'y'){
+            player = 0;
+            computer = 0;
+            game();
+        }
     }
 }
