@@ -1,16 +1,36 @@
 const validChoices = ['rock', 'paper', 'scissors'];
 
-window.onload(playRound());
+let player = 0;
+let computer = 0;
+
+window.onload(game());
+
+function game() {
+    playRound();
+}
 
 function playRound() {
+    alert('Player: ' + player + ' Computer: ' + computer);
     let playerSelection = playerSelect();
     let computerSelection = computerPlay();
-    let winner = compareResults(playerSelection, computerSelection);
+    let playerResult = compareResults(playerSelection, computerSelection);
 
-    alert(winer + ' beats ' + loser);
-    alert('You ' + playerResult);
+    if (playerResult === 'tie'){
+        player++;
+        computer++;
+        alert('Tie');
+        handleGameEndSelection();
+    } else {
+        playerResult === 'win' ? player++ : computer++;
 
-    handleGameEndSelection();
+        let winner = playerResult === 'win' ? playerSelection : computerSelection;
+        let loser = winner === playerSelection ? computerSelection : playerSelection;
+
+        alert(winner + ' beats ' + loser);
+        alert('You ' + playerResult);
+
+        handleGameEndSelection();
+    }
 }
 
 function playerSelect() {
@@ -33,23 +53,38 @@ function promptUserInput() {
 
 function computerPlay() {
     let compNumber = Math.floor((Math.random() * 2) + 1);
-    alert(compNumber);
-    let compChoice = validChoices[compNumber];
-    alert(compChoice);
+    return validChoices[compNumber];
 }
 
 function compareResults(playerSelection, computerSelection) {
+    if(playerSelection === computerSelection){
+        return "tie";
+    }
     if(playerSelection === 'rock') {
-
+        if (computerSelection === 'paper'){
+            return "lose";
+        } else {
+            return 'win';
+        }
+    } else if (playerSelection === 'paper'){
+        if (computerSelection === 'scissor'){
+            return 'lose';
+        } else {
+            return 'win';
+        }
+    } else {
+        return computerSelection === 'rock' ? "lose" : "win";
     }
 }
 
 function handleGameEndSelection() {
-    let playAgainChoice = prompt('Play again? (y/n)');
-    if (playAgainChoice === 'y') {
-        location.reload();
-    }
-    else {
-        alert('Game Over');
+    if (player != 5 && computer != 5) {
+        let playAgainChoice = prompt('Play again? (y/n)');
+        if (playAgainChoice === 'y') {
+            playRound();
+        }
+    } else {
+        let finalGameWinner = player === 5 ? 'Player' : 'Computer';
+        alert('Final Winner: ' + finalGameWinner + '\nGame Over');
     }
 }
