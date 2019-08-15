@@ -75,7 +75,7 @@ function seeIfPlayerWon(playerSelection, computerSelection) {
             return 'win';
         }
     } else if (playerSelection === 'paper'){
-        if (computerSelection === 'scissor'){
+        if (computerSelection === 'scissors'){
             return 'lose';
         } else {
             return 'win';
