@@ -1,0 +1,24 @@
+html {
+    background-color: aqua;
+    font-family: sans-serif;
+}
+
+h1 {
+    margin: auto;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+h2 {
+    font: bold;
+    animation: marquee 5s linear infinite;
+}
+
+button {
+    border: 2px white solid;
+    color: white;
+    background-color: aqua;
+    font-size: 15px;
+    width: 33%;
+    height: 150%;
+}

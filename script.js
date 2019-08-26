@@ -1,7 +1,7 @@
 const validChoices = ['rock', 'paper', 'scissors'];
 
-let player = 0;
-let computer = 0;
+let playerScore = 0;
+let computerScore = 0;
 let currentRound = 1;
 let playerResults = [];
 let computerResults = [];
@@ -25,9 +25,9 @@ const finalWinnerMessageDiv = document.getElementById('finalWinnerMessage');
 
 resultsDisplay.appendChild(createdTable);
 
-game();
+startGame();
 
-function game() {
+function startGame() {
     initializeButtonListeners();
     promptPlayerSelect();
 }
@@ -41,10 +41,10 @@ function initializeButtonListeners() {
 }
 
 function playRound(playerSelection) {
-    let computerSelection = computerPlay();
-    let gameResult = seeIfPlayerWon(playerSelection, computerSelection);
+    let computerChoice = makeComputerChoice();
+    let gameResult = seeIfPlayerWon(playerSelection, computerChoice);
     displayResult(gameResult);
-    updateScore(gameResult, playerSelection, computerSelection);
+    updateScore(gameResult, playerSelection, computerChoice);
     handleGameEndSelection();
 }
 
@@ -62,7 +62,7 @@ function updateScore(gameResult, playerSelection, computerSelection) {
         let loser = winner === playerSelection ? computerSelection : playerSelection;
         promptWinnerAndLoser(winner, loser);
     }
-    scoreBoard.textContent = 'Player: ' + player + ' Computer: ' + computer;
+    scoreBoard.textContent = 'Player: ' + playerScore + ' Computer: ' + computerScore;
 
 }
 
@@ -76,14 +76,14 @@ function promptWinnerAndLoser(winner, loser) {
 }
 
 function handlePlayerWin() {
-    player++;
+    playerScore++;
     playerResults[currentRound - 1] = 'loss';
     computerResults[currentRound -1] = 'win';
     currentRound++;
 }
 
 function handleComputerWin() {
-    computer++;
+    computerScore++;
     playerResults[currentRound - 1] = 'win';
     computerResults[currentRound -1] = 'loss';
     currentRound++;
@@ -93,15 +93,15 @@ function handleTie() {
     playerResults[currentRound - 1] = 'tie';
     computerResults[currentRound - 1] = 'tie';
     currentRound++;
-    player++;
-    computer++;
+    playerScore++;
+    computerScore++;
 }
 
 function promptPlayerSelect() {
     gamePromptMessageDiv.textContent = 'Pick any to choose';
 }
 
-function computerPlay() {
+function makeComputerChoice() {
     let compNumber = Math.floor((Math.random() * 2) + 1);
     return validChoices[compNumber];
 }
@@ -128,12 +128,12 @@ function seeIfPlayerWon(playerSelection, computerSelection) {
 }
 
 function handleGameEndSelection() {
-    if (player != 5 && computer != 5 || (player === 5 && computer === 5)) {
+    if (playerScore != 5 && computerScore != 5 || (playerScore === 5 && computerScore === 5)) {
         return;
     } else {
-        let finalGameWinner = player === 5 ? 'Player' : 'Computer';
+        let finalGameWinner = playerScore === 5 ? 'Player' : 'Computer';
         finalWinnerMessageDiv.textContent = 'Final Winner: ' + finalGameWinner + '\nGame Over \nChoose to play again';
-        player = 0;
-        computer = 0
+        playerScore = 0;
+        computerScore = 0
     }
 }
