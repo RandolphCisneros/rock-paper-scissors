@@ -21,6 +21,7 @@ const resultsDisplay = document.getElementById('resultsDisplay');
 
 const scoreBoard = document.getElementById('scoreBoard');
 const gamePromptMessageDiv = document.getElementById('gamePromptMessage');
+const finalWinnerMessageDiv = document.getElementById('finalWinnerMessage');
 
 resultsDisplay.appendChild(createdTable);
 
@@ -44,7 +45,7 @@ function playRound(playerSelection) {
     let gameResult = seeIfPlayerWon(playerSelection, computerSelection);
     displayResult(gameResult);
     updateScore(gameResult, playerSelection, computerSelection);
-    //handleGameEndSelection();
+    handleGameEndSelection();
 }
 
 function displayResult(result) {
@@ -70,7 +71,7 @@ function promptTie() {
 }
 
 function promptWinnerAndLoser(winner, loser) {
-    gamePromptMessageDiv.textContent = winner + ' beats ' + loser;
+    gamePromptMessageDiv.textContent = winner.charAt(0).toUpperCase() + winner.slice(1) + ' beats ' + loser;
     gamePromptMessageDiv.textContent += '\r\nChoose to play next round';
 }
 
@@ -127,15 +128,12 @@ function seeIfPlayerWon(playerSelection, computerSelection) {
 }
 
 function handleGameEndSelection() {
-    if (player != 5 && computer != 5) {
+    if (player != 5 && computer != 5 || (player === 5 && computer === 5)) {
         return;
     } else {
         let finalGameWinner = player === 5 ? 'Player' : 'Computer';
-        alert('Final Winner: ' + finalGameWinner + '\nGame Over');
-        if (prompt('Play again? y/n') === 'y') {
-            player = 0;
-            computer = 0;
-            game();
-        }
+        finalWinnerMessageDiv.textContent = 'Final Winner: ' + finalGameWinner + '\nGame Over \nChoose to play again';
+        player = 0;
+        computer = 0
     }
 }
