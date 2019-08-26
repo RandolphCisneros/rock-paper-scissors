@@ -2,61 +2,102 @@ const validChoices = ['rock', 'paper', 'scissors'];
 
 let player = 0;
 let computer = 0;
+let currentRound = 1;
+let playerResults = [];
+let computerResults = [];
+
+let createdTable = document.createElement('table');
+let resultsTableHeaderRow = createdTable.insertRow(0);
+let rowHeading = resultsTableHeaderRow.insertCell(0);
+let playerHeaderCell = resultsTableHeaderRow.insertCell(1);
+let computerHeaderCell = resultsTableHeaderRow.insertCell(2);
+rowHeading.textContent = 'Round';
+playerHeaderCell.textContent = 'Player';
+computerHeaderCell.textContent = 'Computer';
+
+const playerButtons = document.getElementsByClassName('playerSelectionButton');
+const resultDisplay = document.getElementById('resultDisplay');
+const resultsDisplay = document.getElementById('resultsDisplay');
+
+const scoreBoard = document.getElementById('scoreBoard');
+const gamePromptMessageDiv = document.getElementById('gamePromptMessage');
+
+resultsDisplay.appendChild(createdTable);
 
 game();
 
 function game() {
-    announceScore();
-    playRound();
-    handleGameEndSelection();
+    initializeButtonListeners();
+    promptPlayerSelect();
 }
 
-function playRound() {
-    let playerSelection = playerSelect();
+function initializeButtonListeners() {
+    Array.prototype.forEach.call(playerButtons, playerButton => {
+        playerButton.addEventListener('click', (e) => {
+            playRound(playerButton.id);
+        });
+    });
+}
+
+function playRound(playerSelection) {
     let computerSelection = computerPlay();
     let gameResult = seeIfPlayerWon(playerSelection, computerSelection);
-
-    if (gameResult === 'tie'){
-        handleTie();
-    } else {
-        announceResult(gameResult, playerSelection, computerSelection);     
-    }
+    displayResult(gameResult);
+    updateScore(gameResult, playerSelection, computerSelection);
+    //handleGameEndSelection();
 }
 
-function announceResult(gameResult, playerSelection, computerSelection) {
-    gameResult === 'win' ? player++ : computer++;
-    let winner = gameResult === 'win' ? playerSelection : computerSelection;
-    let loser = winner === playerSelection ? computerSelection : playerSelection;
-    alert(winner + ' beats ' + loser);
-    alert('You ' + gameResult + ' this round');
+function displayResult(result) {
+    resultDisplay.textContent = result;
+}
+
+function updateScore(gameResult, playerSelection, computerSelection) {
+    if (gameResult === 'tie') {
+        handleTie();
+        promptTie()
+    } else {
+        gameResult === 'win' ? handlePlayerWin() : handleComputerWin();
+        let winner = gameResult === 'win' ? playerSelection : computerSelection;
+        let loser = winner === playerSelection ? computerSelection : playerSelection;
+        promptWinnerAndLoser(winner, loser);
+    }
+    scoreBoard.textContent = 'Player: ' + player + ' Computer: ' + computer;
+
+}
+
+function promptTie() {
+    gamePromptMessageDiv.textContent = 'Tie';
+}
+
+function promptWinnerAndLoser(winner, loser) {
+    gamePromptMessageDiv.textContent = winner + ' beats ' + loser;
+    gamePromptMessageDiv.textContent += '\r\nChoose to play next round';
+}
+
+function handlePlayerWin() {
+    player++;
+    playerResults[currentRound - 1] = 'loss';
+    computerResults[currentRound -1] = 'win';
+    currentRound++;
+}
+
+function handleComputerWin() {
+    computer++;
+    playerResults[currentRound - 1] = 'win';
+    computerResults[currentRound -1] = 'loss';
+    currentRound++;
 }
 
 function handleTie() {
+    playerResults[currentRound - 1] = 'tie';
+    computerResults[currentRound - 1] = 'tie';
+    currentRound++;
     player++;
     computer++;
-    alert('Tie');
 }
 
-function announceScore() {
-    alert('Current Score \nPlayer: ' + player + ' Computer: ' + computer);
-}
-
-function playerSelect() {
-    let playerSelection = promptUserInput();
-    //limited understanding on js arrays but can probably check from valid choices
-    if (playerSelection !== null &&
-        playerSelection.toLowerCase() !== 'rock' && 
-        playerSelection.toLowerCase() !== 'paper' && 
-        playerSelection.toLowerCase() !== 'scissors') {
-        alert("Invalid input");
-        playerSelect();
-    }
-    return playerSelection;
-}
-
-function promptUserInput() {
-    let input = prompt("Please choose rock, paper, or scissors.");
-    return input;
+function promptPlayerSelect() {
+    gamePromptMessageDiv.textContent = 'Pick any to choose';
 }
 
 function computerPlay() {
@@ -65,17 +106,17 @@ function computerPlay() {
 }
 
 function seeIfPlayerWon(playerSelection, computerSelection) {
-    if(playerSelection === computerSelection){
+    if (playerSelection === computerSelection) {
         return "tie";
     }
-    if(playerSelection === 'rock') {
-        if (computerSelection === 'paper'){
+    if (playerSelection === 'rock') {
+        if (computerSelection === 'paper') {
             return "lose";
         } else {
             return 'win';
         }
-    } else if (playerSelection === 'paper'){
-        if (computerSelection === 'scissors'){
+    } else if (playerSelection === 'paper') {
+        if (computerSelection === 'scissors') {
             return 'lose';
         } else {
             return 'win';
@@ -87,16 +128,11 @@ function seeIfPlayerWon(playerSelection, computerSelection) {
 
 function handleGameEndSelection() {
     if (player != 5 && computer != 5) {
-        let playAgainChoice = prompt('Next round? (y/n)');
-        if (playAgainChoice === 'y') {
-            game();
-        } else {
-            alert('Forefeit\nGame Over');
-        }
+        return;
     } else {
         let finalGameWinner = player === 5 ? 'Player' : 'Computer';
         alert('Final Winner: ' + finalGameWinner + '\nGame Over');
-        if(prompt('Play again? y/n') === 'y'){
+        if (prompt('Play again? y/n') === 'y') {
             player = 0;
             computer = 0;
             game();
