@@ -55,7 +55,13 @@ function initializeButtonListeners() {
 }
 
 function playRound(playerSelection) {
-    finalWinnerMessageDiv.textContent = '';
+    if (finalWinnerMessageDiv.textContent != '') {
+        for (var i = currentRound; i > 1; i--){
+            createdTable.deleteRow(i - 1);
+        }
+        currentRound = 1;
+        finalWinnerMessageDiv.textContent = '';
+    }
     let computerChoice = makeComputerChoice();
     let gameResult = seeIfPlayerWon(playerSelection, computerChoice);
     displayResult(gameResult);
@@ -154,6 +160,5 @@ function handleGameEndSelection() {
         finalWinnerMessageDiv.textContent = 'Final Winner: ' + finalGameWinner + '\nGame Over \nChoose to play again';
         playerScore = 0;
         computerScore = 0;
-        round = 1;
     }
 }

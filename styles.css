@@ -22,3 +22,7 @@ button {
     width: 80px;
     height: 50px;
 }
+
+tr:nth-child(even) {
+    background-color: darkcyan;
+}
