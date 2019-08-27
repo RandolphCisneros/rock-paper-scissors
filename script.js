@@ -7,19 +7,11 @@ let playerResults = [];
 let computerResults = [];
 
 let createdTable = document.createElement('table');
-let resultsTableHeaderRow = createdTable.insertRow(0);
-let rowHeading = resultsTableHeaderRow.insertCell(0);
-let playerHeaderCell = resultsTableHeaderRow.insertCell(1);
-let computerHeaderCell = resultsTableHeaderRow.insertCell(2);
-rowHeading.textContent = 'Round';
-playerHeaderCell.textContent = 'Player';
-computerHeaderCell.textContent = 'Computer';
 
 const playerButtons = document.getElementsByClassName('playerSelectionButton');
 const resultDisplay = document.getElementById('resultDisplay');
 const resultsDisplay = document.getElementById('resultsDisplay');
 const roundResultDiv = document.getElementById('roundResult');
-
 const scoreBoard = document.getElementById('scoreBoard');
 const gamePromptMessageDiv = document.getElementById('gamePromptMessage');
 const finalWinnerMessageDiv = document.getElementById('finalWinnerMessage');
@@ -30,7 +22,28 @@ startGame();
 
 function startGame() {
     initializeButtonListeners();
+    intializeTableHeaders();
     promptPlayerSelect();
+}
+
+function intializeTableHeaders() {
+    let resultsTableHeaderRow = createdTable.insertRow(0);
+    let rowHeading = resultsTableHeaderRow.insertCell(0);
+    let playerHeaderCell = resultsTableHeaderRow.insertCell(1);
+    let computerHeaderCell = resultsTableHeaderRow.insertCell(2);
+    rowHeading.textContent = 'Round';
+    playerHeaderCell.textContent = 'Player';
+    computerHeaderCell.textContent = 'Computer';
+}
+
+function updateResultsTable() {
+    let currentRoundRow = createdTable.insertRow(currentRound);
+    let currentRoundRowHeading = currentRoundRow.insertCell(0);
+    let currentRoundPlayerCell = currentRoundRow.insertCell(1);
+    let currentRoundComputerCell = currentRoundRow.insertCell(2);
+    currentRoundRowHeading.textContent = currentRound;
+    currentRoundPlayerCell.textContent = playerResults[currentRound -1];
+    currentRoundComputerCell.textContent = computerResults[currentRound - 1];
 }
 
 function initializeButtonListeners() {
@@ -82,6 +95,7 @@ function handlePlayerWin() {
     playerScore++;
     playerResults[currentRound - 1] = 'loss';
     computerResults[currentRound -1] = 'win';
+    updateResultsTable();
     currentRound++;
 }
 
@@ -89,12 +103,14 @@ function handleComputerWin() {
     computerScore++;
     playerResults[currentRound - 1] = 'win';
     computerResults[currentRound -1] = 'loss';
+    updateResultsTable();
     currentRound++;
 }
 
 function handleTie() {
     playerResults[currentRound - 1] = 'tie';
     computerResults[currentRound - 1] = 'tie';
+    updateResultsTable();
     currentRound++;
     playerScore++;
     computerScore++;
@@ -137,6 +153,7 @@ function handleGameEndSelection() {
         let finalGameWinner = playerScore === 5 ? 'Player' : 'Computer';
         finalWinnerMessageDiv.textContent = 'Final Winner: ' + finalGameWinner + '\nGame Over \nChoose to play again';
         playerScore = 0;
-        computerScore = 0
+        computerScore = 0;
+        round = 1;
     }
 }
