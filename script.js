@@ -18,6 +18,7 @@ computerHeaderCell.textContent = 'Computer';
 const playerButtons = document.getElementsByClassName('playerSelectionButton');
 const resultDisplay = document.getElementById('resultDisplay');
 const resultsDisplay = document.getElementById('resultsDisplay');
+const roundResultDiv = document.getElementById('roundResult');
 
 const scoreBoard = document.getElementById('scoreBoard');
 const gamePromptMessageDiv = document.getElementById('gamePromptMessage');
@@ -41,6 +42,7 @@ function initializeButtonListeners() {
 }
 
 function playRound(playerSelection) {
+    finalWinnerMessageDiv.textContent = '';
     let computerChoice = makeComputerChoice();
     let gameResult = seeIfPlayerWon(playerSelection, computerChoice);
     displayResult(gameResult);
@@ -67,12 +69,13 @@ function updateScore(gameResult, playerSelection, computerSelection) {
 }
 
 function promptTie() {
-    gamePromptMessageDiv.textContent = 'Tie';
+    roundResultDiv.textContent = 'Tie';
+    gamePromptMessageDiv.textContent = '\r\nChoose to play next round';
 }
 
 function promptWinnerAndLoser(winner, loser) {
-    gamePromptMessageDiv.textContent = winner.charAt(0).toUpperCase() + winner.slice(1) + ' beats ' + loser;
-    gamePromptMessageDiv.textContent += '\r\nChoose to play next round';
+    roundResultDiv.textContent = winner.charAt(0).toUpperCase() + winner.slice(1) + ' beats ' + loser;
+    gamePromptMessageDiv.textContent = '\r\nChoose to play next round';
 }
 
 function handlePlayerWin() {
